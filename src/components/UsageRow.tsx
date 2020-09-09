@@ -55,11 +55,12 @@ function UsageRow(props: UsageRowProps) {
                 <TableCell align="right">{usage.idChargingStation}</TableCell>
                 <TableCell align="right">{usage.getStartDate().format("YYYY-MM-DD HH24:mm:ss")}</TableCell>
                 <TableCell align="right">{usage.getEndDate().format("YYYY-MM-DD HH24:mm:ss")}</TableCell>
+                <TableCell align="right">{usage.energia_total_transacao}</TableCell>
                 <TableCell align="right">{usage.totalDuration}</TableCell>
                 <TableCell align="right">{getPriceOpc()}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
@@ -70,6 +71,7 @@ function UsageRow(props: UsageRowProps) {
                                     <TableRow>
                                         <TableCell>ID</TableCell>
                                         <TableCell>Date</TableCell>
+                                        <TableCell>kW h</TableCell>
                                         <TableCell>Duration</TableCell>
                                         <TableCell align="right">Price</TableCell>
                                     </TableRow>
@@ -80,6 +82,7 @@ function UsageRow(props: UsageRowProps) {
 
                                             <TableCell>{subUsage.idSubUsage}</TableCell>
                                             <TableCell >{subUsage.getDay().format("YYYY-MM-DD")}</TableCell>
+                                            <TableCell>{subUsage.energia_total_periodo}</TableCell>
                                             <TableCell>{subUsage.periodDuration}</TableCell>
                                             <TableCell align="right">
                                                 {subUsage.preco_opc}

@@ -39,6 +39,7 @@ function FileViewer() {
                             <TableCell >Station</TableCell>
                             <TableCell >Start</TableCell>
                             <TableCell >Finish</TableCell>
+                            <TableCell>kW h</TableCell>
                             <TableCell>Duration</TableCell>
                             <TableCell>Price</TableCell>
                         </TableRow>

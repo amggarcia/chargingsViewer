@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Usage from '../types/Usage';
 import SubUsage from '../types/SubUsage';
 import * as _ from 'lodash';
+import { roundAccurately } from '../helpers/roundingHelper'
 
 interface AveragesViewerProps {
     usages: Usage[]
@@ -22,7 +23,8 @@ enum AverageType {
 interface Average {
     AverageTypeIdentifier: string,
     Duration: number,
-    Price: number
+    Price: number,
+    Energy: number
 }
 
 function AveragesViewer(props: AveragesViewerProps) {
@@ -67,12 +69,16 @@ function AveragesViewer(props: AveragesViewerProps) {
             newAverage.AverageTypeIdentifier = x;
             newAverage.Duration = 0;
             newAverage.Price = 0;
-
+            newAverage.Energy = 0;
             grouped[x].forEach(usage => {
                 const subUsages = getSubUsages(usage);
                 newAverage.Duration += _.sumBy(subUsages, x => x.periodDuration * 1);
                 newAverage.Price += _.sumBy(subUsages, x => x.preco_opc * 1);
+                newAverage.Energy += _.sumBy(subUsages, x => x.energia_total_periodo * 1);
             })
+            newAverage.Duration = roundAccurately(newAverage.Duration, 3);
+            newAverage.Price = roundAccurately(newAverage.Price, 2);
+            newAverage.Energy = roundAccurately(newAverage.Energy, 3);
             calcedAverages.push(newAverage);
         })
         return calcedAverages;
@@ -87,6 +93,7 @@ function AveragesViewer(props: AveragesViewerProps) {
                     <TableHead>
                         <TableRow>
                             <TableCell>{averageType}</TableCell>
+                            <TableCell>kW h</TableCell>
                             <TableCell>Duration</TableCell>
                             <TableCell>Price</TableCell>
                         </TableRow>
@@ -96,6 +103,7 @@ function AveragesViewer(props: AveragesViewerProps) {
                             averages.map((average: Average) => (
                                 <TableRow>
                                     <TableCell>{average.AverageTypeIdentifier}</TableCell>
+                                    <TableCell>{average.Energy}</TableCell>
                                     <TableCell>{average.Duration}</TableCell>
                                     <TableCell>{average.Price}</TableCell>
                                 </TableRow>
