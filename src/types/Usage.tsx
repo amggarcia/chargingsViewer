@@ -1,7 +1,7 @@
 import moment from 'moment'
 import SubUsage from './SubUsage'
 
-export default class Usage {
+export class Usage {
     idUsage: string
     idServiceProvider: string
     idExternalNumber: string
@@ -26,4 +26,17 @@ export default class Usage {
     totalDuration: number
     energia_total_transacao: number
     SubUsage: SubUsage[]
+}
+
+
+export function getSubUsages(usage: Usage) {
+    if (usage.SubUsage.length <= 0)
+        return [] as SubUsage[]
+    var subUsages: SubUsage[] = [] as SubUsage[];
+
+    if (Array.isArray(usage.SubUsage))
+        subUsages = usage.SubUsage.concat(subUsages)
+    else if (usage.SubUsage)
+        subUsages.push(usage.SubUsage)
+    return subUsages;
 }
