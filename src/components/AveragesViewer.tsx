@@ -11,6 +11,7 @@ import { Usage } from "../types/Usage";
 import SubUsage from "../types/SubUsage";
 import * as _ from "lodash";
 import { roundAccurately } from "../helpers/roundingHelper";
+import AverageRow from "./AverageRow";
 
 interface AveragesViewerProps {
   usages: Usage[];
@@ -20,17 +21,21 @@ enum AverageType {
   Station = "Station",
 }
 
-interface Average {
+export interface Average {
   AverageTypeIdentifier: string;
   Duration: number;
   Price: number;
   Energy: number;
+  SubUsages: SubUsage[];
 }
 
 function AveragesViewer(props: AveragesViewerProps) {
   const [averageType, setAverageType] = useState(AverageType.Provider);
   const [averages, setAverages] = useState(
-    calcAverages(_.groupBy(props.usages, (x) => x.idServiceProvider))
+    calcAverages(
+      _.groupBy(props.usages, (x) => x.idServiceProvider),
+      AverageType.Provider
+    )
   );
 
   function getSubUsages(usage: Usage) {
@@ -50,13 +55,15 @@ function AveragesViewer(props: AveragesViewerProps) {
       switch (type) {
         case AverageType.Station:
           newAverages = calcAverages(
-            _.groupBy(props.usages, (x) => x.idChargingStation)
+            _.groupBy(props.usages, (x) => x.idChargingStation),
+            type
           );
           setAverages(newAverages);
           break;
         case AverageType.Provider:
           newAverages = calcAverages(
-            _.groupBy(props.usages, (x) => x.idServiceProvider)
+            _.groupBy(props.usages, (x) => x.idServiceProvider),
+            type
           );
           setAverages(newAverages);
           break;
@@ -65,7 +72,10 @@ function AveragesViewer(props: AveragesViewerProps) {
       }
     }
   }
-  function calcAverages(grouped: _.Dictionary<Usage[]>): Average[] {
+  function calcAverages(
+    grouped: _.Dictionary<Usage[]>,
+    type: String
+  ): Average[] {
     console.log(grouped);
     var calcedAverages = [] as Average[];
     Object.keys(grouped).forEach((x) => {
@@ -74,6 +84,7 @@ function AveragesViewer(props: AveragesViewerProps) {
       newAverage.Duration = 0;
       newAverage.Price = 0;
       newAverage.Energy = 0;
+      newAverage.SubUsages = [];
       grouped[x].forEach((usage) => {
         const subUsages = getSubUsages(usage);
         newAverage.Duration += _.sumBy(subUsages, (x) => x.periodDuration * 1);
@@ -86,9 +97,61 @@ function AveragesViewer(props: AveragesViewerProps) {
       newAverage.Duration = roundAccurately(newAverage.Duration, 3);
       newAverage.Price = roundAccurately(newAverage.Price, 2);
       newAverage.Energy = roundAccurately(newAverage.Energy, 3);
+      newAverage.SubUsages = getInnerRows(grouped[x], type);
       calcedAverages.push(newAverage);
     });
     return calcedAverages;
+  }
+
+  function calcInnerRows(grouped: _.Dictionary<Usage[]>): SubUsage[] {
+    var innerRows = [] as SubUsage[];
+    Object.keys(grouped).forEach((x) => {
+      var newAverage = {} as SubUsage;
+      newAverage.idSubUsage = x;
+      newAverage.energia_total_periodo = 0;
+      newAverage.periodDuration = 0;
+      newAverage.preco_opc = 0;
+      grouped[x].forEach((usage) => {
+        const subUsages = getSubUsages(usage);
+        newAverage.periodDuration += _.sumBy(
+          subUsages,
+          (x) => x.periodDuration * 1
+        );
+        newAverage.preco_opc += _.sumBy(subUsages, (x) => x.preco_opc * 1);
+        newAverage.energia_total_periodo += _.sumBy(
+          subUsages,
+          (x) => x.energia_total_periodo * 1
+        );
+      });
+      newAverage.periodDuration = roundAccurately(newAverage.periodDuration, 3);
+      newAverage.preco_opc = roundAccurately(newAverage.preco_opc, 2);
+      newAverage.energia_total_periodo = roundAccurately(
+        newAverage.energia_total_periodo,
+        3
+      );
+      innerRows.push(newAverage);
+    });
+    return innerRows;
+  }
+  function getInnerRows(usages: Usage[], type: String): SubUsage[] {
+    let subRows = [] as SubUsage[];
+    if (usages.length > 0) {
+      switch (type) {
+        case AverageType.Station:
+          subRows = calcInnerRows(
+            _.groupBy(usages, (x) => x.idServiceProvider)
+          );
+          break;
+        case AverageType.Provider:
+          subRows = calcInnerRows(
+            _.groupBy(usages, (x) => x.idChargingStation)
+          );
+          break;
+        default:
+          break;
+      }
+      return subRows;
+    }
   }
 
   return (
@@ -113,6 +176,7 @@ function AveragesViewer(props: AveragesViewerProps) {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
+              <TableCell>{}</TableCell>
               <TableCell>{averageType}</TableCell>
               <TableCell>kW h</TableCell>
               <TableCell>Duration</TableCell>
@@ -121,12 +185,10 @@ function AveragesViewer(props: AveragesViewerProps) {
           </TableHead>
           <TableBody>
             {averages.map((average: Average) => (
-              <TableRow>
-                <TableCell>{average.AverageTypeIdentifier}</TableCell>
-                <TableCell>{average.Energy}</TableCell>
-                <TableCell>{average.Duration}</TableCell>
-                <TableCell>{average.Price}</TableCell>
-              </TableRow>
+              <AverageRow
+                average={average}
+                averageType={averageType}
+              ></AverageRow>
             ))}
           </TableBody>
         </Table>
