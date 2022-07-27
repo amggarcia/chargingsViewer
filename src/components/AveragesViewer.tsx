@@ -182,6 +182,28 @@ function AveragesViewer(props: AveragesViewerProps) {
               <TableCell>Duration</TableCell>
               <TableCell>Price</TableCell>
             </TableRow>
+            <TableRow>
+              <TableCell>{"Totals"}</TableCell>
+              <TableCell>{}</TableCell>
+              <TableCell>
+                {roundAccurately(
+                  averages.reduce((p, c) => p + c.Energy, 0),
+                  3
+                )}
+              </TableCell>
+              <TableCell>
+                {roundAccurately(
+                  averages.reduce((p, c) => p + c.Duration, 0),
+                  3
+                )}
+              </TableCell>
+              <TableCell>
+                {roundAccurately(
+                  averages.reduce((p, c) => p + c.Price, 0),
+                  2
+                )}
+              </TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {averages.map((average: Average) => (
