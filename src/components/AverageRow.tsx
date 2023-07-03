@@ -57,6 +57,7 @@ function AverageRow(props: AverageRowProps) {
         <TableCell>{average.Energy}</TableCell>
         <TableCell>{average.Duration}</TableCell>
         <TableCell>{average.Price}</TableCell>
+        <TableCell>{subUsages.length}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>

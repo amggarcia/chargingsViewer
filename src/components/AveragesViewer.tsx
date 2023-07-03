@@ -181,6 +181,7 @@ function AveragesViewer(props: AveragesViewerProps) {
               <TableCell>kW h</TableCell>
               <TableCell>Duration</TableCell>
               <TableCell>Price</TableCell>
+              <TableCell>Count</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>{"Totals"}</TableCell>
@@ -200,6 +201,12 @@ function AveragesViewer(props: AveragesViewerProps) {
               <TableCell>
                 {roundAccurately(
                   averages.reduce((p, c) => p + c.Price, 0),
+                  2
+                )}
+              </TableCell>
+              <TableCell>
+                {roundAccurately(
+                  averages.reduce((p, c) => p + c.SubUsages.length, 0),
                   2
                 )}
               </TableCell>
