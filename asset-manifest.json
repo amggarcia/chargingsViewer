@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/chargingsViewer/static/css/main.7ba44731.chunk.css",
-    "main.js": "/chargingsViewer/static/js/main.07514415.chunk.js",
-    "main.js.map": "/chargingsViewer/static/js/main.07514415.chunk.js.map",
+    "main.js": "/chargingsViewer/static/js/main.a1688044.chunk.js",
+    "main.js.map": "/chargingsViewer/static/js/main.a1688044.chunk.js.map",
     "runtime-main.js": "/chargingsViewer/static/js/runtime-main.89bf3a42.js",
     "runtime-main.js.map": "/chargingsViewer/static/js/runtime-main.89bf3a42.js.map",
     "static/js/2.c1d14cbc.chunk.js": "/chargingsViewer/static/js/2.c1d14cbc.chunk.js",
     "static/js/2.c1d14cbc.chunk.js.map": "/chargingsViewer/static/js/2.c1d14cbc.chunk.js.map",
     "index.html": "/chargingsViewer/index.html",
-    "precache-manifest.1279e840394bd6d8200c3e5abb150aa2.js": "/chargingsViewer/precache-manifest.1279e840394bd6d8200c3e5abb150aa2.js",
+    "precache-manifest.fb49216eff0f03ad12f929f9874887f4.js": "/chargingsViewer/precache-manifest.fb49216eff0f03ad12f929f9874887f4.js",
     "service-worker.js": "/chargingsViewer/service-worker.js",
     "static/css/main.7ba44731.chunk.css.map": "/chargingsViewer/static/css/main.7ba44731.chunk.css.map",
     "static/js/2.c1d14cbc.chunk.js.LICENSE.txt": "/chargingsViewer/static/js/2.c1d14cbc.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.89bf3a42.js",
     "static/js/2.c1d14cbc.chunk.js",
     "static/css/main.7ba44731.chunk.css",
-    "static/js/main.07514415.chunk.js"
+    "static/js/main.a1688044.chunk.js"
   ]
 }
