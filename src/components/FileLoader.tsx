@@ -50,7 +50,6 @@ function FileLoader(props: props) {
       });
     }
 
-    console.log(tempData);
     tempData = tempData.map((item) => {
       return Object.assign(new Usage(), item);
     });

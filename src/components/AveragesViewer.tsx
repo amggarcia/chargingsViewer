@@ -27,6 +27,7 @@ export interface Average {
   Price: number;
   Energy: number;
   SubUsages: SubUsage[];
+  Count: number;
 }
 
 function AveragesViewer(props: AveragesViewerProps) {
@@ -76,7 +77,6 @@ function AveragesViewer(props: AveragesViewerProps) {
     grouped: _.Dictionary<Usage[]>,
     type: String
   ): Average[] {
-    console.log(grouped);
     var calcedAverages = [] as Average[];
     Object.keys(grouped).forEach((x) => {
       var newAverage = {} as Average;
@@ -84,6 +84,7 @@ function AveragesViewer(props: AveragesViewerProps) {
       newAverage.Duration = 0;
       newAverage.Price = 0;
       newAverage.Energy = 0;
+      newAverage.Count = 0;
       newAverage.SubUsages = [];
       grouped[x].forEach((usage) => {
         const subUsages = getSubUsages(usage);
@@ -93,6 +94,7 @@ function AveragesViewer(props: AveragesViewerProps) {
           subUsages,
           (x) => x.energia_total_periodo * 1
         );
+        newAverage.Count += 1;
       });
       newAverage.Duration = roundAccurately(newAverage.Duration, 3);
       newAverage.Price = roundAccurately(newAverage.Price, 2);
@@ -206,7 +208,7 @@ function AveragesViewer(props: AveragesViewerProps) {
               </TableCell>
               <TableCell>
                 {roundAccurately(
-                  averages.reduce((p, c) => p + c.SubUsages.length, 0),
+                  averages.reduce((p, c) => p + c.Count, 0),
                   2
                 )}
               </TableCell>
