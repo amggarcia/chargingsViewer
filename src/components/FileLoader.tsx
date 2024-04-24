@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import Button from "@material-ui/core/Button";
+import { useState, useRef } from "react";
+import Button from "@mui/material/Button";
 import { Parser } from "xml2js";
 import { Usage } from "../types/Usage";
 import SubUsage from "../types/SubUsage";
@@ -10,14 +10,17 @@ interface props {
 }
 
 function FileLoader(props: props) {
-  const [loadedUsages, setData] = useState([] as Usage[]);
-  const fileInput = useRef(null);
+  const [_, setData] = useState([] as Usage[]);
+  const fileInput = useRef<HTMLInputElement>(null);
   function onButtonClick() {
     if (fileInput && fileInput.current) fileInput.current.click();
   }
 
   function clearFiles() {
-    fileInput.current.value = "";
+    if (fileInput && fileInput.current) {
+      fileInput.current.value = "";
+    }
+
     setData([] as Usage[]);
     props.setData([] as Usage[]);
   }
@@ -27,8 +30,8 @@ function FileLoader(props: props) {
       var parser = new Parser({ explicitArray: false });
       var reader = new FileReader();
 
-      reader.onload = function (evt: any) {
-        parser.parseString(reader.result, function (err: any, result: any) {
+      reader.onload = function () {
+        parser.parseString(reader.result as string, function (result: any) {
           resolve(result);
         });
       };
@@ -39,8 +42,11 @@ function FileLoader(props: props) {
     });
   }
 
-  async function loadXMLFile(files: FileList) {
+  async function loadXMLFile(files: FileList | null) {
     var tempData: Usage[] = [];
+    if (files == null) {
+      return;
+    }
 
     if (files.length <= 0) return;
     for (var i = 0; i < files.length; i++) {

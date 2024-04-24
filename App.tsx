@@ -1,5 +1,6 @@
-import "./App.css";
-import FileViewer from "./components/FileViewer";
+import React from 'react';
+import './App.css';
+import FileViewer from './components/FileViewer'
 
 function App() {
   return (
@@ -7,7 +8,6 @@ function App() {
       <header className="App-header">
         <FileViewer></FileViewer>
       </header>
-      <div style={{ display: "none" }}>Vite</div>
     </div>
   );
 }
