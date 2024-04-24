@@ -1,15 +1,15 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Usage } from "../types/Usage";
 import SubUsage from "../types/SubUsage";
 
@@ -56,10 +56,10 @@ function UsageRow(props: UsageRowProps) {
         <TableCell align="right">{usage.idServiceProvider}</TableCell>
         <TableCell align="right">{usage.idChargingStation}</TableCell>
         <TableCell align="right">
-          {usage.getStartDate().format("YYYY-MM-DD HH24:mm:ss")}
+          {usage.getStartDate()?.format("YYYY-MM-DD HH24:mm:ss")}
         </TableCell>
         <TableCell align="right">
-          {usage.getEndDate().format("YYYY-MM-DD HH24:mm:ss")}
+          {usage.getEndDate()?.format("YYYY-MM-DD HH24:mm:ss")}
         </TableCell>
         <TableCell align="right">{usage.energia_total_transacao}</TableCell>
         <TableCell align="right">{usage.totalDuration}</TableCell>
@@ -87,7 +87,7 @@ function UsageRow(props: UsageRowProps) {
                     <TableRow key={subUsage.idSubUsage}>
                       <TableCell>{subUsage.idSubUsage}</TableCell>
                       <TableCell>
-                        {subUsage.getDay().format("YYYY-MM-DD")}
+                        {subUsage.getDay()?.format("YYYY-MM-DD")}
                       </TableCell>
                       <TableCell>{subUsage.energia_total_periodo}</TableCell>
                       <TableCell>{subUsage.periodDuration}</TableCell>
